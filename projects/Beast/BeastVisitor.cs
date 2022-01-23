@@ -24,11 +24,12 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
 
     public override object? VisitImportStatement([NotNull] BeastLangParser.ImportStatementContext context)
     {
-        var package = context.PACKAGE_IMPORT().GetText();
-        Console.WriteLine("Importing package: " + package);
-        switch (package)
+        var importedPackage = context.PACKAGE_IMPORT().GetText();
+        var importSources = importedPackage.Split(':');
+        Console.WriteLine($"Importing {importSources[1]} from {importSources[0]}");
+        switch (importSources[0])
         {
-            case "beast.stdio:*":
+            case "beast.stdio":
                 Variables["Write"] = new Func<object?[], object?>(Write);
                 break;
         }
