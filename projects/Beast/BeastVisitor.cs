@@ -1,14 +1,16 @@
 ﻿using Antlr4.Runtime.Misc;
 using Beast.Content;
+using Beast.Targets;
 
 namespace Beast;
 
 public class BeastVisitor : BeastLangBaseVisitor<object?>
 {
+    private ITarget target;
     private Dictionary<string, object?> Variables { get; } = new();
 
-    public BeastVisitor() {
-        
+    public BeastVisitor(ITarget target) {
+        this.target = target;
     }
 
     private object? Write(object?[] args)
@@ -105,29 +107,10 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
 
         return op switch
         {
-            "+" => Add(left, right),
+            "+" => target.Add(left, right),
             // "-" => Subtract(left, right),
             _ => throw new NotImplementedException()
         };
-    }
-
-    private object? Add(object? left, object? right)
-    {
-        if(left is int l && right is int r)
-            return l + r;
-
-        if(left is float lf && right is float rf)
-            return lf + rf;
-
-        if(left is int lInt && right is float rFloat)
-            return lInt + rFloat;
-
-        if(left is float lFloat && right is int rInt)
-            return lFloat + rInt;
-        if(left is string || right is string)
-            return $"{left}{right}";
-
-        throw new Exception($"Cannot add values of types {left?.GetType()} and {right?.GetType()}.");
     }
 
     public override object? VisitWhileBlock([NotNull] BeastLangParser.WhileBlockContext context)
@@ -172,38 +155,14 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
 
         return op switch
         {
-            "==" => IsEquals(left, right),
-            "!=" => NotEquals(left, right),
+            "==" => target.IsEquals(left, right),
+            "!=" => target.NotEquals(left, right),
             // ">" => GreaterThan(left, right),
-            "<" => LessThan(left, right),
+            "<" => target.LessThan(left, right),
             // ">=" => GreaterOrEqualThan(left, right),
             // "<=" => LessOrEqualThan(left, right),
             _ => throw new NotImplementedException()
         };
-    }
-
-    private bool IsEquals(object? left, object? right)
-    {
-        return Object.Equals(left, right);
-    }
-
-    private bool NotEquals(object? left, object? right)
-    {
-        return left != right;
-    }
-
-    private bool LessThan(object? left, object? right)
-    {
-        if (left is int l && right is int r)
-            return l < r;
-        if (left is float lf && right is float rf)
-            return lf < rf;
-        if (left is int lInt && right is float rFloat)
-            return lInt < rFloat;
-        if (left is float lFloat && right is int rInt)
-            return lFloat < rInt;
-
-        throw new Exception($"Cannot compare values of types {left?.GetType()} and {right?.GetType()}.");
     }
 
     private bool IsTrue(object? value)

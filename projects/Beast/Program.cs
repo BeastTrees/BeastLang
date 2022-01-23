@@ -2,6 +2,7 @@
 using Beast;
 using Beast.Content;
 using Beast.Utils;
+using Beast.Targets;
 
 ConsoleErrorWriterDecorator.SetToConsole();
 
@@ -16,6 +17,6 @@ var commonTokenStream = new CommonTokenStream(lexer);
 var parser = new BeastLangParser(commonTokenStream);
 parser.AddErrorListener(new BeastErrorHandler());
 var beastContext = parser.program();
-var visitor = new BeastVisitor();
+var visitor = new BeastVisitor(new ScriptTarget());
 
 visitor.Visit(beastContext);
