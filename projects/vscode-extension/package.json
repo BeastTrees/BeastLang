@@ -1,0 +1,25 @@
+{
+    "name": "beastlang",
+    "displayName": "BeastLang",
+    "description": "Language Support for .beast files",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.63.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "beastlang",
+            "aliases": ["Beast", "beastlang"],
+            "extensions": [".beast"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "beastlang",
+            "scopeName": "source.beast",
+            "path": "./syntaxes/beastlang.tmLanguage.json"
+        }]
+    }
+}
