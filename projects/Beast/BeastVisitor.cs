@@ -7,7 +7,6 @@ namespace Beast;
 public class BeastVisitor : BeastLangBaseVisitor<object?>
 {
     private ITarget target;
-    private Dictionary<string, object?> Variables { get; } = new();
 
     public BeastVisitor(ITarget target) {
         this.target = target;
@@ -32,7 +31,7 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
         switch (importSources[0])
         {
             case "beast.stdio":
-                Variables["Write"] = new Func<object?[], object?>(Write);
+                VariableManager.set("Write", new Func<object?[], object?>(Write), true);
                 break;
         }
         return null;
@@ -43,12 +42,12 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
         var name = context.IDENTIFIER().ToString();
         var args = context.expression().Select(Visit).ToArray();
 
-        if(!Variables.TryGetValue(name, out var value))
+        if(!VariableManager.Variables.TryGetValue(name, out var value))
         {
             throw new Exception($"Function {name} is not defined.");
         }
 
-        if (Variables[name] is not Func<object?[], object?> func)
+        if (VariableManager.Variables[name].value is not Func<object?[], object?> func)
             throw new Exception($"Variable {name} is not a function.");
         
         return func(args);
@@ -56,11 +55,21 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
 
     public override object? VisitAssignment([NotNull] BeastLangParser.AssignmentContext context)
     {
-        var varName = context.IDENTIFIER().GetText();
+        if(context.newAssignment() != null)
+        {
+            var varName = context.newAssignment().IDENTIFIER().GetText();
 
-        var value = Visit(context.expression());
+            var value = Visit(context.newAssignment().expression());
 
-        Variables[varName] = value;
+            VariableManager.set(varName, value, context.newAssignment().FINAL() != null);
+        } else
+        {
+            var varName = context.reAssignment().IDENTIFIER().GetText();
+
+            var value = Visit(context.reAssignment().expression());
+
+            VariableManager.set(varName, value);
+        }
 
         return null;
     }
@@ -69,12 +78,7 @@ public class BeastVisitor : BeastLangBaseVisitor<object?>
     {
         var varName = context.IDENTIFIER().GetText();
 
-        if(!Variables.ContainsKey(varName))
-        {
-            throw new Exception($"Variable {varName} is not defined yet.");
-        }
-
-        return Variables[varName];
+        return VariableManager.get(varName);
     }
 
     public override object? VisitConstant([NotNull] BeastLangParser.ConstantContext context)

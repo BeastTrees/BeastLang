@@ -5,8 +5,10 @@ import me.lixou.rock_paper_siccors.utils:*;
 
 // Ignore me
 
-var i = 1;
-const name = 'John "Nickname" Whatever';
+public i = 1;
+private final name = 'John "Nickname" Whatever';
+
+name = "Not John";
 
 if(name == 'John "Nickname" Whatever') {
 	Write("it works :D");
@@ -22,6 +24,6 @@ while (/* ignore me */ i < 8) {
 	Write("i was plenty big to begin with.");
 }
 
-j = i;
+public j = i;
 
-Write("i is " + i + ".");
+Write(name + " says: " + "i is " + i + ".");

@@ -14,7 +14,10 @@ whileBlock: WHILE '(' expression ')' block ('else' elseIfBlock)?;
 
 WHILE: 'while' | 'until';
 
-assignment: ('var' | 'const')? IDENTIFIER '=' expression;
+assignment: newAssignment | reAssignment;
+
+newAssignment: (PUBLIC | PRIVATE) FINAL? IDENTIFIER '=' expression;
+reAssignment: IDENTIFIER '=' expression;
 
 functionCall:
 	IDENTIFIER '(' (expression (',' expression)*)? ')';
@@ -47,6 +50,10 @@ FLOAT: [0-9]+ '.' [0-9]+;
 STRING: ('"' ~'"'* '"') | ('\'' ~'\''* '\'');
 BOOL: 'true' | 'false';
 NULL: 'null';
+
+PUBLIC: 'public';
+PRIVATE: 'private';
+FINAL: 'final';
 
 block: '{' line* '}';
 
