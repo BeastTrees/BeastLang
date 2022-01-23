@@ -2,6 +2,6 @@ package me.someguy.example.helloWorld;
 
 import beast.stdio:*;
 
-var message = "Hello, world!";
+public final message = "Hello, world!";
 
 Write(message);
