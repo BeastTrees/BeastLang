@@ -38,9 +38,7 @@ expression:
 multOp: '*' | '/' | '%';
 addOp: '+' | '-';
 compareOp: '==' | '!=' | '>' | '<' | '>=' | '<=';
-boolOp: BOOL_OPERATOR;
-
-BOOL_OPERATOR: '&&' | '||' | 'xor';
+boolOp: '&&' | '||' | 'xor';
 
 constant: INTEGER | FLOAT | STRING | BOOL | NULL;
 
@@ -54,7 +52,7 @@ block: '{' line* '}';
 
 WS: [ \t\r\n]+ -> skip;
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-PACKAGE: [a-zA-Z._*]+;
+PACKAGE: [a-zA-Z._]+;
 PACKAGE_IMPORT: PACKAGE ':' [a-zA-Z._*]+;
 
 COMMENT: '/*' .*? '*/' -> skip;
