@@ -5,8 +5,7 @@ using Beast.Utils;
 
 ConsoleErrorWriterDecorator.SetToConsole();
 
-var fileName = "Content\\test.beast"; // TODO: args[0]
-//var fileName = args[0];
+var fileName = args[0];
 
 Console.WriteLine("[beastc] Start compiling on '" + fileName + "'...");
 

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Beast": {
+      "commandName": "Project",
+      "commandLineArgs": "Content/test.beast"
+    }
+  }
+}
