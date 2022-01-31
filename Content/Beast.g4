@@ -10,7 +10,7 @@ assignment: IDENTIFIER '=' value;
 
 
 
-value: constant;
+value: constant | IDENTIFIER;
 
 constant: INTEGER | FLOAT | BOOL;
 
