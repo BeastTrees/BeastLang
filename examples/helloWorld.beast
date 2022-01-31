@@ -1,7 +1,0 @@
-package me.someguy.example.helloWorld;
-
-import beast.stdio:*;
-
-public final message = "Hello, world!";
-
-Write(message);
